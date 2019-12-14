@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Suwon Bicycle</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="email">kimhj9292@google.com</string>
+    <string name="message">개발자에게 메일 보내기</string>
+    <string name="suwon1">영신여자고등학교</string>
+    <string name="suwon2">경기도 수원시 권선구 삼천병마로1566번길 30</string>
+    <string name="suwon3">고색고등학교</string>
+    <string name="suwon4">경기도 수원시 권선구 서둔로17번길 32</string>
+    <string name="suwon5">권선고등학교</string>
+    <string name="suwon6">경기도 수원시 권선구 세권로 276</string>
+    <string name="suwon7">칠보고등학교</string>
+    <string name="suwon8">경기도 수원시 권선구 금곡로 127</string>
+    <string name="suwon9">호매실고등학교</string>
+    <string name="suwon10">경기도 수원시 권선구 칠보로 142-1</string>
+    <string name="suwon11">화홍고등학교</string>
+    <string name="suwon12">경기도 수원시 권선구 세권로 331</string>
+    <string name="suwon13">유신고등학교</string>
+    <string name="suwon14">경기도 수원시 팔달구 월드컵로 216</string>
+    <string name="suwon15">광교중학교</string>
+    <string name="suwon16">경기도 수원시 영통구 웰빙타운로 55</string>
+    <string name="suwon17">매원중학교</string>
+    <string name="suwon18">경기도 수원시 영통구 매탄로 177</string>
+    <string name="suwon19">매탄중학교</string>
+    <string name="suwon20">경기도 수원시 영통구 효원로 337</string>
+    <string name="suwon21">수원다산중학교</string>
+    <string name="suwon22">경기도 수원시 영통구 혜령로 12</string>
+    <string name="suwon23">연무중학교</string>
+    <string name="suwon24">경기도 수원시 영통구 센트럴타운로100번길 30</string>
+    <string name="suwon25">영통중학교</string>
+    <string name="suwon26">경기도 수원시 영통구 영통로 316</string>
+    <string name="suwon27">이의중학교</string>
+    <string name="suwon28">경기도 수원시 영통구 법조로 129</string>
+
+
+</resources>

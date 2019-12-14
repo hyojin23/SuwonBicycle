@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBC02D"
+
+
+    >
+
+    <TextView
+        android:id="@+id/text_view_loading_title"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text="수원시자전거"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="28dp"
+        android:textColorHighlight="@android:color/background_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_bike_lottie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="300dp"
+        />
+
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/progressbar"-->
+        <!--style="?android:attr/progressBarStyleHorizontal"-->
+        <!--android:layout_width="290dp"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:layout_marginStart="24dp"-->
+        <!--android:layout_marginLeft="24dp"-->
+        <!--android:layout_marginTop="44dp"-->
+        <!--android:layout_marginEnd="24dp"-->
+        <!--android:layout_marginRight="24dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.492"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/bike_image" />-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/bike_image"-->
+        <!--android:layout_width="196dp"-->
+        <!--android:layout_height="220dp"-->
+        <!--android:layout_marginStart="24dp"-->
+        <!--android:layout_marginLeft="24dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="24dp"-->
+        <!--android:layout_marginRight="24dp"-->
+        <!--android:layout_marginBottom="24dp"-->
+        <!--android:src="@drawable/bicycle"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.497"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+</android.support.constraint.ConstraintLayout>

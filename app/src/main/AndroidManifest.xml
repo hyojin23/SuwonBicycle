@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.suwonbicycle">
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!-- 정확한 위치정보 확인 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 대략적인 위치정보 확인 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- wifi 연결을 확인 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- wifi 변화를 확인 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 네트워크 연결을 확인 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 네트워크 변화를 확인 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 부팅이 완료된 것을 확인 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷을 사용 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 전화 기능 사용 -->
+    <uses-feature android:name="android.hardware.location.gps" /> <!-- GPS가 수신하는 정확한 위치정보 사용 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!--사진을 가져오고 사용하기 위한 외부 저장소에 대한 권한-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.sensor.compass" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/bicycle"
+        android:label="수원시자전거"
+        android:roundIcon="@drawable/bicycle"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false">
+
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name="com.example.suwonbicycle.MapsExample"
+            android:label="수원시자전거"></activity>
+        <activity android:name="com.example.suwonbicycle.SearchActivity" />
+        <activity android:name="com.example.suwonbicycle.ShortInfoActivity" />
+        <activity android:name="com.example.suwonbicycle.MapActivity"/>
+        <activity android:name="com.example.suwonbicycle.CommunityActivity"/>
+        <activity android:name="com.example.suwonbicycle.WriteActivity"/>
+        <activity android:name="com.example.suwonbicycle.ReadPostActivity"/>
+        <activity android:name="com.example.suwonbicycle.EditActivity"/>
+        <activity android:name="com.example.suwonbicycle.LoadingActivity"/>
+        <activity android:name="com.example.suwonbicycle.RecordTimeActivity"/>
+        <activity android:name="com.example.suwonbicycle.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service android:name="com.example.suwonbicycle.StopWatchService"></service>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.suwonbicycle"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>
