@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         if (mainArrayList.size() == 0) {
             // 공공데이터 불러오는 AsyncTask 실행
             Log.d(TAG, "공공데이터 불러오는 PublicAsyncTask 실행");
-            PublicAsyncTask asyncTask = new PublicAsyncTask();
-            asyncTask.execute();
+//            PublicAsyncTask asyncTask = new PublicAsyncTask();
+//            asyncTask.execute();
         } else {
             Log.d(TAG, "onCreate: mainArrayList.size(): " + mainArrayList.size());
         }
@@ -176,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     // TODO: 현재 위치를 위도, 경도로 나타내고 주소로 표현시키는 메소드
     /*
      * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드입니다.
@@ -276,40 +275,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String getCurrentAddress(double latitude, double longitude) {
-
-        //지오코더... GPS를 주소로 변환
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        List<Address> addresses;
-
-        try {
-
-            addresses = geocoder.getFromLocation(
-                    latitude,
-                    longitude,
-                    7);
-        } catch (IOException ioException) {
-            //네트워크 문제
-            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-            return "지오코더 서비스 사용불가";
-        } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-            return "잘못된 GPS 좌표";
-
-        }
-
-
-        if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
-            return "주소 미발견";
-
-        }
-
-        Address address = addresses.get(0);
-        return address.getAddressLine(0).toString() + "\n";
-
-    }
+//    public String getCurrentAddress(double latitude, double longitude) {
+//
+//        //지오코더... GPS를 주소로 변환
+//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//
+//        List<Address> addresses;
+//
+//        try {
+//
+//            addresses = geocoder.getFromLocation(
+//                    latitude,
+//                    longitude,
+//                    7);
+//        } catch (IOException ioException) {
+//            //네트워크 문제
+//            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
+//            return "지오코더 서비스 사용불가";
+//        } catch (IllegalArgumentException illegalArgumentException) {
+//            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+//            return "잘못된 GPS 좌표";
+//
+//        }
+//
+//
+//        if (addresses == null || addresses.size() == 0) {
+//            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
+//            return "주소 미발견";
+//
+//        }
+//
+//        Address address = addresses.get(0);
+//        return address.getAddressLine(0).toString() + "\n";
+//
+//    }
 
 
     //여기부터는 GPS 활성화를 위한 메소드들
