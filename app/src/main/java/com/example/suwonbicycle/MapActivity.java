@@ -97,6 +97,8 @@ public class MapActivity extends AppCompatActivity
 
         Log.d(TAG, "onCreate");
 
+
+
         // 현재 위치 요청
         locationRequest = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -192,6 +194,7 @@ public class MapActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady :");
         mGoogleMap = googleMap;
+
         addMarker();
         // 런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
         // 지도의 초기위치를 서울로 이동
@@ -289,10 +292,10 @@ public class MapActivity extends AppCompatActivity
         if (checkPermission()) {
             Log.d(TAG, "onStart : call mFusedLocationClient.requestLocationUpdates");
             mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-            if (mGoogleMap != null)
+            if (mGoogleMap != null) {
                 mGoogleMap.setMyLocationEnabled(true);
+            }
         }
-
 
     }
 

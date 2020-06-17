@@ -22,7 +22,7 @@
     <uses-feature android:name="android.hardware.sensor.compass" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/bicycle"
         android:label="수원시자전거"
         android:roundIcon="@drawable/bicycle"

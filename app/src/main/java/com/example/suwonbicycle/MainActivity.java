@@ -2,17 +2,13 @@ package com.example.suwonbicycle;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -34,17 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bike_main);
 
+        saveRackDataToShared();
+
         // 리스트에 데이터가 없으면 데이터를 요청하는 asyncTask 실행
         if (mainArrayList.size() == 0) {
             // 공공데이터 불러오는 AsyncTask 실행
@@ -87,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         // 불가능하면 GPS 활성화를 위한 메소드를 실행
         if (!checkLocationServicesStatus()) {
             showDialogForLocationServiceSetting();
-        // 가능하면 권한 확인
+            // 가능하면 권한 확인
         } else {
             checkRunTimePermission();
         }
@@ -138,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 전국 자전거 보관소 검색 클릭시
+        // 자전거 보관소 검색 클릭시
         Button buttonSearch = (Button) findViewById(R.id.search_rack_btn);
 
         buttonSearch.setOnClickListener(new TextView.OnClickListener() {
@@ -275,42 +263,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    public String getCurrentAddress(double latitude, double longitude) {
-//
-//        //지오코더... GPS를 주소로 변환
-//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//
-//        List<Address> addresses;
-//
-//        try {
-//
-//            addresses = geocoder.getFromLocation(
-//                    latitude,
-//                    longitude,
-//                    7);
-//        } catch (IOException ioException) {
-//            //네트워크 문제
-//            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-//            return "지오코더 서비스 사용불가";
-//        } catch (IllegalArgumentException illegalArgumentException) {
-//            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-//            return "잘못된 GPS 좌표";
-//
-//        }
-//
-//
-//        if (addresses == null || addresses.size() == 0) {
-//            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
-//            return "주소 미발견";
-//
-//        }
-//
-//        Address address = addresses.get(0);
-//        return address.getAddressLine(0).toString() + "\n";
-//
-//    }
-
-
     //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
 
@@ -388,241 +340,6 @@ public class MainActivity extends AppCompatActivity {
         backPressCloseHandler.onBackPressed();
     }
 
-    // 공공데이터를 불러오기 위한 Asynctask
-    public class PublicAsyncTask extends AsyncTask<String, String, String> {
-
-        // 로딩 프로그레스 다이얼로그
-        ProgressDialog asyncDialog = new ProgressDialog(MainActivity.this);
-
-        @Override
-        protected void onPreExecute() {
-            Log.d(TAG, "onPreExecute() 실행");
-            super.onPreExecute();
-            // 다이얼로그 스타일
-            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            // 화면 밖 터치시 종료 불가
-            asyncDialog.setCancelable(false);
-            // 다이얼로그 메세지
-            asyncDialog.setMessage("데이터를 불러오는 중입니다. 잠시만 기다려 주세요...");
-            asyncDialog.show();
-
-
-        }
-
-        @Override
-        protected String doInBackground(String... abs) {
-            // TODO json데이터 가져오기
-            Log.d(TAG, "doInBackground() 실행");
-            // strUrl: api 요청 주소
-            String strUrl = "http://api.data.go.kr/openapi/bcycl-dpstry-std";
-            strUrl += "?serviceKey=qK66giaNBLBdzCKVTFvwC1weXrhR9GIOrLDOdHfDYgiAsCZLnrbh%2Blhjj6VPFTaxNICs0lyefTHP3W0x%2FvhK9w%3D%3D";
-            strUrl += "&type=json";
-            strUrl += "&insttCode=3740000";
-            //strUrl += "&rdnmadr="+ URLEncoder.encode(str);
-            //Log.d(TAG, "구리:"+URLEncoder.encode(str));
-            strUrl += "&numOfRows=326";
-            strUrl += "&pageNo=1";
-            //strUrl += "&instt_nm=UTF-8로 인코딩된 value";
-            Log.d(TAG, "doInBackground() 실행2");
-            URL url = null;
-            try {
-                url = new URL(strUrl);
-                Log.d(TAG, "strUrl 값:" + strUrl);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            URLConnection urlConnection = null;
-            try {
-                urlConnection = url.openConnection();
-                Log.d(TAG, "try2");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            HttpURLConnection connection = null;
-
-            if (urlConnection instanceof HttpURLConnection) {
-                connection = (HttpURLConnection) urlConnection;
-
-                Log.d(TAG, "if문");
-            } else {
-                Log.d(TAG, "else문");
-                // System.out.println("error");
-                // return;
-            }
-            Log.d(TAG, "doInBackground() 실행3");
-            BufferedReader in = null;
-            try {
-                Log.d(TAG, "doInBackground() 실행4");
-//                connection.setConnectTimeout(5000);
-//                connection.setReadTimeout(5000);
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                Log.d(TAG, "doInBackground() 실행5");
-                Log.d(TAG, "connection 값:" + connection.getInputStream());
-                Log.d(TAG, "try3");
-            } catch (java.net.SocketTimeoutException e) {
-                Log.d(TAG, "connection timeout 예외 발생");
-                // 다이얼로그 종료
-                asyncDialog.dismiss();
-            } catch (IOException e) {
-                Log.d(TAG, "예외 발생");
-                Toast.makeText(MainActivity.this, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-            String urlString = "";
-            String current;
-
-                while (true) {
-                    try {
-                        if ((current = in.readLine()) == null)
-                            Log.d(TAG, "urlString 값:" + urlString);
-                        urlString += current + "\n";
-                        Log.d(TAG, "urlString 값:" + urlString);
-                        Log.d(TAG, "try4");
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, "urlString 값:" + urlString);
-                    Log.d(TAG, "doInBackground() 실행6");
-                    return urlString;
-                }
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... params) {
-            Log.d(TAG, "onProgressUpdate() 실행");
-
-        }
-
-        @Override
-        protected void onPostExecute(String urlString) {
-            Log.d(TAG, "onPostExecute() 실행");
-            super.onPostExecute(urlString);
-            asyncDialog.dismiss();
-            try {
-                JSONObject object = new JSONObject(urlString);
-                JSONObject response = new JSONObject(object.getString("response"));
-                JSONObject body = new JSONObject(response.getString("body"));
-                JSONArray jarr = new JSONArray(body.getString("items"));
-                // 메인 리스트에 데이터가 계속 쌓이지 않게 한번 초기화 후 데이터 저장
-                // 자전거 보관소 검색에서 수원역과 같은 하나의 보관소를 검색시 수원역이 여러 개 들어있는 에러 해결
-                // 현재 AsyncTask에서 json 데이터를 파싱하여 mainArrayList에 저장하고, 쉐어드에서는 mainArrayList.size()로, 즉 메인 리스트의 크기로
-                // 반복문을 돌려 데이터를 저장하는데 mainArrayList가 초기화되지 않으면 계속 데이터가 쌓여 AsyncTask가 실행될 때마다 mainArrayList.size()=326, 652 이런식으로
-                // 2배씩 증가한다. SearchActivity는 쉐어드에 저장된 데이터를 불러온 후 mList에 저장하고 검색하면 검색어와 일치하는 정보만 filterList에 저장하는데
-                // 쉐어드에 저장된 정보가 계속 증가하니 SearchActivity에서 불러오는 정보도 늘어나 mList의 크기가 늘어난 것이다.
-                mainArrayList.clear();
-                for (int i = 0; i < jarr.length(); i++) {
-                    JSONObject rack = new JSONObject(jarr.getJSONObject(i).toString());
-                    String rackName = rack.getString("dpstryNm"); // 자전거보관소명
-                    String landBasedAddress = rack.getString("lnmadr"); // 보관소지번주소
-                    double latitude = rack.getDouble("latitude"); // 위도
-                    double longitude = rack.getDouble("hardness"); // 경도
-                    String airInjectorYn = rack.getString("airInjectorYn"); // 공기주입기 비치여부
-                    String repairStandYn = rack.getString("repairStandYn"); // 수리대 설치여부
-                    String phoneNumber = rack.getString("phoneNumber"); // 관리기관 전화번호
-                    String institutionNm = rack.getString("institutionNm"); // 관리기관명
-                    //  Log.d(TAG, "자전거보관소명:" + rackName);
-                    //  Log.d(TAG, "보관소지번주소:" + landBasedAddress);
-                    SearchDictionary dict = new SearchDictionary(rackName, landBasedAddress, latitude, longitude, airInjectorYn, repairStandYn, phoneNumber, institutionNm);
-                    Log.d(TAG, "dict:" + dict.getRackName());
-                    Log.d(TAG, "dict:" + dict.getLandBasedAddress());
-                    Log.d(TAG, "dict:" + dict.getLatitude());
-                    Log.d(TAG, "dict:" + dict.getLongitude());
-                    Log.d(TAG, "dict:" + dict.getAirInjectorYn());
-                    Log.d(TAG, "dict:" + dict.getRepairStandYn());
-                    Log.d(TAG, "dict:" + dict.getPhoneNumber());
-                    Log.d(TAG, "dict:" + dict.getInstitutionName());
-                    mainArrayList.add(dict);
-                    // SearchActivity.mArrayList.add(dict); //첫 줄에 삽입
-                    //  Log.d(TAG, "dict:" + SearchActivity.mArrayList.size());
-
-
-                    //mArrayList.add(dict); //마지막 줄에 삽입
-
-                    //textView.setText(jarr[0]);
-                }
-
-
-                //  SearchActivity.mAdapter.notifyDataSetChanged(); //변경된 데이터를 화면에 반영
-                Log.d(TAG, "제이슨에 자전거 정보 저장");
-                saveBikeDataToJson();
-//                Log.d(TAG,"제이슨에서 자전거 정보 불러오기");
-//                loadBikeDataFromJson();
-//                Log.d(TAG,"불러온 정보 리사이클러뷰에 반영");
-//                SearchActivity.mAdapter.notifyDataSetChanged();
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-    // json으로 데이터 저장(스탑워치의 AraayList를 json형식으로 저장)
-    private void saveBikeDataToJson() {
-        Log.d(TAG, "제이슨에 자전거 정보 저장 시작");
-        // SharedPreferences 객체 생성
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
-        // Editor 객체 생성
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        // JSONObject 객체 생성
-        JSONObject obj = new JSONObject();
-        try {
-            // 배열이 필요할때
-            JSONArray jArray = new JSONArray();
-            Log.d(TAG, "메인 리스트 사이즈: " + mainArrayList.size());
-            // 배열
-            for (int i = 0; i < mainArrayList.size(); i++)
-            {
-                //배열 내에 들어갈 json
-                JSONObject object = new JSONObject();
-                // mainArrayList에 기록된 자전거보관소 이름을 불러와서 object에 저장
-                object.put("rakcName", mainArrayList.get(i).getRackName());
-                // mainArrayList에 기록된 보관소 지번주소를 불러와서 object에 저장
-                object.put("LandBasedAddress", mainArrayList.get(i).getLandBasedAddress());
-                // mainArrayList에 기록된 위도를 불러와서 object에 저장
-                object.put("latitude", mainArrayList.get(i).getLatitude());
-                // mainArrayList에 기록된 경도를 불러와서 object에 저장
-                object.put("longitude", mainArrayList.get(i).getLongitude());
-                // mainArrayList에 기록된 공기주입기 비치여부를 불러와서 object에 저장
-                object.put("airInjectorYn", mainArrayList.get(i).getAirInjectorYn());
-                // mainArrayList에 기록된 수리대 설치여부를 불러와서 object에 저장
-                object.put("repairStandYn", mainArrayList.get(i).getRepairStandYn());
-                // mainArrayList에 기록된 관리기관 전화번호를 불러와서 object에 저장
-                object.put("phoneNumber", mainArrayList.get(i).getPhoneNumber());
-                // mainArrayList에 기록된 관리기관명을 불러와서 object에 저장
-                object.put("institutionNm", mainArrayList.get(i).getInstitutionName());
-
-                // jArray에 object 저장
-                jArray.put(object);
-
-                Log.d(TAG, "저장된 보관소명:" + mainArrayList.get(i).getRackName());
-                Log.d(TAG, "저장된 지번주소:" + mainArrayList.get(i).getLandBasedAddress());
-                Log.d(TAG, "저장된 위도:" + mainArrayList.get(i).getLatitude());
-                Log.d(TAG, "저장된 경도:" + mainArrayList.get(i).getLongitude());
-                Log.d(TAG, "저장된 공기주입기 설치여부:" + mainArrayList.get(i).getAirInjectorYn());
-                Log.d(TAG, "저장된 수리대 설치여부:" + mainArrayList.get(i).getRepairStandYn());
-                Log.d(TAG, "저장된 관리기관 전화번호:" + mainArrayList.get(i).getPhoneNumber());
-                Log.d(TAG, "저장된 관리기관명:" + mainArrayList.get(i).getInstitutionName());
-
-            }
-
-            // 오브젝트에 배열을 넣음
-            obj.put("bikeInfo", jArray);
-            // 오브젝트를 String 형식으로 바꿈
-            String some = obj.toString();
-            // editor에 some 넣고 적용
-            editor.putString("bikeDataString", some);
-            editor.apply();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     // 로티 실행 메소드
     public void setupLottie() {
         LottieAnimationView lottie = findViewById(R.id.bike_lottie);
@@ -630,6 +347,62 @@ public class MainActivity extends AppCompatActivity {
         lottie.loop(true);   // or
         lottie.setRepeatCount(LottieDrawable.INFINITE);
         lottie.playAnimation();
+    }
+
+     // 보관소 데이터를 SharedPrefernces에 저장한다.
+    private void saveRackDataToShared() {
+        // 보관소 정보
+        ArrayList<String[]> rackData = RackData.getInstance().readData(this);
+        // SharedPreferences 객체 생성
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+        // Editor 객체 생성
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // JSONObject 객체 생성
+        JSONObject outObject = new JSONObject();
+        // key 이름
+        String[] key = {"rakcName", "roadBasedAddress", "LandBasedAddress", "latitude", "longitude", "cstdyCo",
+                "installationYear", "installationStle", "awningsYn", "airInjectorYn", "airInjectorType", "repairStandYn",
+                "phoneNumber", "institutionNm", "referenceDate"};
+        try {
+            // 배열이 필요할때
+            JSONArray jArray = new JSONArray();
+            Log.d(TAG, "메인 리스트 사이즈: " + mainArrayList.size());
+            // 배열
+            for (String[] onePlace : rackData) {
+                JSONObject inObject = new JSONObject();
+                if (rackData.indexOf(onePlace) == 0) {
+                    Log.d(TAG, "addRackData: " + onePlace[0] + " " + onePlace[1] + " " + onePlace[2] + " " + onePlace[3]);
+                } else {
+                    int idx = 0;
+                    for (String value : onePlace) {
+                        // JSONObject 객체 생성
+//                        Log.d(TAG, "saveRackDataToShared: idx: " + idx);
+                        inObject.put(key[idx], value);
+//                        Log.d(TAG, "saveRackDataToShare: " + key[idx] + ": " + value);
+                        idx++;
+                    }
+//                    Log.d(TAG, "saveRackDataToShared: inObject: " + inObject);
+                    // jArray에 object 저장
+                    jArray.put(inObject);
+                }
+            }
+//            Log.d(TAG, "saveRackDataToShared: jArray: " + jArray);
+            // 오브젝트에 배열을 넣음
+            outObject.put("bikeInfo", jArray);
+            // 오브젝트를 String 형식으로 바꿈
+            String some = outObject.toString();
+            // editor에 some 넣고 적용
+            editor.putString("bikeDataString", some);
+            editor.apply();
+            {
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
